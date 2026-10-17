@@ -2,7 +2,12 @@ import { useEffect, type ReactElement } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { hotspots } from './data/hotspots'
 import About from './pages/About'
+import BookPage from './pages/BookPage'
 import Home from './pages/Home'
+import experienceMd from './content/experience.md?raw'
+import skillsMd from './content/skills.md?raw'
+import studiesMd from './content/studies.md?raw'
+import moreMd from './content/more.md?raw'
 import Lar from './pages/Lar'
 import Placeholder from './pages/Placeholder'
 import Reino from './pages/Reino'
@@ -46,6 +51,10 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/experience" element={<BookPage title="Experience" markdown={experienceMd} />} />
+        <Route path="/skills" element={<BookPage title="Skills" markdown={skillsMd} />} />
+        <Route path="/studies" element={<BookPage title="Studies" markdown={studiesMd} />} />
+        <Route path="/more" element={<BookPage title="More" markdown={moreMd} />} />
         {hotspots.map((hotspot) => (
           <Route
             key={hotspot.id}

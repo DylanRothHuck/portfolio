@@ -1,7 +1,8 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @theme {
-  --color-frame: #3a2e25;
+  --color-frame: #600000;
   --color-ink: #1c1814;
   --color-cream: #e4e2cf;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
@@ -14,6 +15,16 @@
 :root {
   --frame-m: clamp(10px, 1.6vw, 24px);
   --painting-ratio: 960 / 1193;
+  --page-bg: var(--color-frame);
+}
+
+/* Keep the html/body background in sync with the page actually rendered. */
+html:has(.bg-red-800) {
+  --page-bg: color-mix(in oklch, var(--color-red-800), black 35%);
+}
+
+html:has(.bg-amber-100) {
+  --page-bg: color-mix(in oklch, var(--color-amber-100), black 12%);
 }
 
 html,
@@ -22,7 +33,7 @@ body {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  background: var(--color-frame);
+  background: var(--page-bg);
   color: var(--color-cream);
   font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
