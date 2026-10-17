@@ -9,6 +9,9 @@ interface HotspotProps {
   dimmed: boolean
   debug: boolean
   touchMode: boolean
+  /** Visible slice of the painting as percentages (left < right). */
+  visibleLeft: number
+  visibleRight: number
   onActivate: (id: string) => void
   onDeactivate: () => void
 }
@@ -19,15 +22,25 @@ export default function Hotspot({
   dimmed,
   debug,
   touchMode,
+  visibleLeft,
+  visibleRight,
   onActivate,
   onDeactivate,
 }: HotspotProps) {
   const { id, title, symbol, href, x, y, w, h } = hotspot
+
+  // On phones the painting covers the screen and its sides are clipped away;
+  // nudge a hotspot horizontally so its centre stays inside the visible slice.
+  const cropped = visibleLeft > 0 || visibleRight < 100
+  const pad = cropped ? 3 : 0
+  const centre = Math.min(Math.max(x + w / 2, visibleLeft + pad), visibleRight - pad)
+  const bx = Math.min(Math.max(centre - w / 2, 0), Math.max(0, 100 - w))
+
   const Symbol = symbols[symbol]
-  const side = labelSide(hotspot)
+  const side = labelSide({ ...hotspot, x: bx })
 
   const boxStyle: CSSProperties = {
-    left: `${x}%`,
+    left: `${bx}%`,
     top: `${y}%`,
     width: `${w}%`,
     height: `${h}%`,
@@ -38,7 +51,7 @@ export default function Hotspot({
   if (active) {
     boxStyle.backgroundOrigin = 'border-box'
     boxStyle.backgroundSize = `${10000 / w}% ${10000 / h}%`
-    boxStyle.backgroundPosition = `${(x / (100 - w)) * 100}% ${(y / (100 - h)) * 100}%`
+    boxStyle.backgroundPosition = `${(bx / (100 - w)) * 100}% ${(y / (100 - h)) * 100}%`
   }
 
   const borderColor =
@@ -58,15 +71,7 @@ export default function Hotspot({
 
   const handleClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     // Debug mode: keep the boxes visible but disable navigation.
-    if (debug) {
-      event.preventDefault()
-      return
-    }
-    // Touch: first tap reveals, second tap navigates (Link handles the rest).
-    if (touchMode && !active) {
-      event.preventDefault()
-      onActivate(id)
-    }
+    if (debug) event.preventDefault()
   }
 
   return (

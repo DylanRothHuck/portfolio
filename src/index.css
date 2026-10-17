@@ -43,16 +43,17 @@ body::before {
   box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.55);
 }
 
-/* The largest box with the painting's aspect ratio that fits in the viewport
-   minus the frame margin on every side, so the whole painting is always
-   visible on any aspect ratio (wide desktop, portrait phone, etc.). */
+/* The painting fills the frame margin box, scaled to cover it: its width is the
+   larger of the available width and the width needed to fill the viewport
+   height at the painting's aspect ratio. Wide screens therefore fill the width
+   and scroll vertically; phones fill the height, so the painting covers the
+   whole screen with its sides clipped (hotspots are nudged back into view).
+   `--painting-ratio` expands to the token stream `960 / 1193` (parenthesised). */
 .painting-frame {
-  height: min(
-    calc(100dvh - 2 * var(--frame-m)),
-    calc((100vw - 2 * var(--frame-m)) / (var(--painting-ratio)))
-  );
+  position: relative;
+  flex: none;
+  width: max(100%, calc((100dvh - 2 * var(--frame-m)) * (var(--painting-ratio))));
   aspect-ratio: var(--painting-ratio);
-  max-width: calc(100vw - 2 * var(--frame-m));
 }
 
 /* Lit hotspot window: shows the matching slice of the painting, undimmed. */
