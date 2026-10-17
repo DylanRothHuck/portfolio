@@ -88,19 +88,7 @@ export default function Painting() {
           <div>Roth Huck</div>
         </div>
 
-        {/* Vertical tag, left edge. Decorative for now. */}
-        <div
-          className="pointer-events-none absolute z-10 select-none rounded-r-md bg-ink/85 px-1.5 py-3 text-cream"
-          style={{
-            top: '5%',
-            left: 0,
-            writingMode: 'vertical-rl',
-            fontSize: 'clamp(10px, 1.1vw, 12px)',
-            letterSpacing: '0.08em',
-          }}
-        >
-          Cello Sonata No. 1
-        </div>
+
 
         {hotspots.map((hotspot) => (
           <Hotspot

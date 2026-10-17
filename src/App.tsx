@@ -7,12 +7,14 @@ import Lar from './pages/Lar'
 import Placeholder from './pages/Placeholder'
 import Reino from './pages/Reino'
 import Rothex from './pages/Rothex'
+import Tonutti from './pages/Tonutti'
 
 // Hotspots with a bespoke page; everything else falls back to <Placeholder>.
 const customPages: Record<string, ReactElement> = {
   lar: <Lar />,
   rothex: <Rothex />,
   reino: <Reino />,
+  tonnuti: <Tonutti />,
   about: <About />,
 }
 
